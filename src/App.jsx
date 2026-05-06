@@ -23,6 +23,12 @@ const pages = [
     topTilt: "-1.2deg",
     bottomTilt: "1.5deg",
   },
+    {
+    top: "https://lh3.googleusercontent.com/d/1YjAsp_5KLi18GdYcmuLomrEOwQodCOlq",
+    bottom: "https://lh3.googleusercontent.com/d/1HWa-6hw5LvUOfmWfJyUyVJkM_Eh_k9cq",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
   "end",
 ];
 // ───────────────────────────────────────────────────────────────
