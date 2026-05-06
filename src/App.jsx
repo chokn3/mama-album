@@ -395,12 +395,14 @@ function Album() {
   const progress = total > 1 ? (displayIndex / (total - 1)) * 100 : 0;
 
   const petals = [
-    { width: 18, height: 12, color: "#f8bbd9", left: "8%",  delay: "0s",   duration: "7s"   },
-    { width: 12, height: 8,  color: "#f3e5f5", left: "25%", delay: "1.5s", duration: "9s"   },
-    { width: 14, height: 10, color: "#fce4ec", left: "55%", delay: "3s",   duration: "8s"   },
-    { width: 10, height: 7,  color: "#f8bbd9", left: "75%", delay: "0.8s", duration: "11s"  },
-    { width: 16, height: 11, color: "#f3e5f5", left: "90%", delay: "4s",   duration: "6.5s" },
-    { width: 11, height: 8,  color: "#fce4ec", left: "42%", delay: "2s",   duration: "10s"  },
+    { width: 22, height: 14, color: "#e8789a", left: "5%",  delay: "0s",   duration: "8s"   },
+    { width: 14, height: 9,  color: "#c9557a", left: "18%", delay: "2.1s", duration: "11s"  },
+    { width: 18, height: 12, color: "#f0a0bc", left: "33%", delay: "0.6s", duration: "9s"   },
+    { width: 10, height: 7,  color: "#e8789a", left: "50%", delay: "3.4s", duration: "7s"   },
+    { width: 20, height: 13, color: "#d4608a", left: "63%", delay: "1.2s", duration: "10s"  },
+    { width: 13, height: 9,  color: "#f0a0bc", left: "78%", delay: "4.5s", duration: "8.5s" },
+    { width: 16, height: 11, color: "#e8789a", left: "91%", delay: "0.3s", duration: "12s"  },
+    { width: 11, height: 7,  color: "#c9557a", left: "42%", delay: "5s",   duration: "9.5s" },
   ];
 
   return (
@@ -411,6 +413,10 @@ function Album() {
           10%  { opacity: 0.18; }
           90%  { opacity: 0.18; }
           100% { transform: translateY(110vh) rotate(180deg); opacity: 0; }
+        }
+        @keyframes pageEnterBg {
+          from { opacity: 0; transform: scale(1.03); }
+          to   { opacity: 1; transform: scale(1); }
         }
       `}</style>
 
@@ -429,6 +435,7 @@ function Album() {
           touchAction: "pan-y",
           position: "relative",
           overflow: "hidden",
+          animation: "pageEnterBg 1s cubic-bezier(0.23,1,0.32,1) forwards",
         }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
@@ -460,6 +467,13 @@ function Album() {
             }}
           />
         ))}
+
+        <div style={{
+          animation: "pageEnterBg 1.1s 0.2s cubic-bezier(0.23,1,0.32,1) both",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}>
 
         <p
           style={{
@@ -723,6 +737,7 @@ function Album() {
         >
           swipe or tap to turn pages
         </p>
+      </div>
       </div>
     </>
   );
