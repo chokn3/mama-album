@@ -329,7 +329,7 @@ function PhotoPage({ data }) {
         >
           <div
             style={{
-              background: "white",
+              background: "#fff",
               padding: "5px 5px 20px 5px",
               boxShadow:
                 "0 2px 10px rgba(180,80,110,0.15), 0 1px 3px rgba(180,80,110,0.1)",
@@ -345,7 +345,7 @@ function PhotoPage({ data }) {
               style={{
                 width: "100%",
                 height: "100%",
-                objectFit: "cover",
+                objectFit: "contain",
                 display: "block",
               }}
               loading="lazy"
