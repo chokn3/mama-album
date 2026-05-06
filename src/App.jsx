@@ -436,7 +436,7 @@ function EndPage({ onClose }) {
             e.currentTarget.style.boxShadow = "0 4px 16px rgba(180,80,110,0.3)";
           }}
         >
-          close the album ↩
+          close the album
         </button>
       </div>
     </div>
