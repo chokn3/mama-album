@@ -2,8 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import WelcomePage from "./WelcomePage.jsx";
 
 // ─── YOUR PHOTOS ───────────────────────────────────────────────
-const COVER_PHOTO = "https://lh3.googleusercontent.com/d/12jSAoRv6CdYcoH9LIsSJZaa4o0OvbnNh"; // ← replace with your mom's photo ID
-
+const COVER_PHOTO = "https://lh3.googleusercontent.com/d/12jSAoRv6CdYcoH9LIsSJZaa4o0OvbnNh"; 
 const pages = [
   "cover",
   {
