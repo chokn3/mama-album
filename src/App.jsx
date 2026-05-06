@@ -1,8 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 
 // ─── YOUR PHOTOS ───────────────────────────────────────────────
-// Each page shows 2 photos (top + bottom).
-// Replace the lh3.googleusercontent.com URLs with your own.
 const pages = [
   "cover",
   {
@@ -31,90 +29,8 @@ const BOOK_W = 360;
 const BOOK_H = 500;
 const SPINE_W = 22;
 const PAGE_W = BOOK_W - SPINE_W;
-
 const paperBg = "#f5efe0";
 const paperBg2 = "#ede7d5";
-
-function PhotoPage({ data, mirror }) {
-  // mirror=true means this is the "back face" shown during a backward turn
-  const tiltTop = mirror ? `rotate(${data.topTilt ? data.topTilt.replace("-", "") : "1deg"})` : `rotate(${data.topTilt || "-1deg"})`;
-  const tiltBot = mirror ? `rotate(${data.bottomTilt ? data.bottomTilt.replace("-", "") : "-1deg"})` : `rotate(${data.bottomTilt || "1deg"})`;
-
-  return (
-    <div style={{
-      width: "100%",
-      height: "100%",
-      background: mirror ? paperBg2 : paperBg,
-      display: "flex",
-      flexDirection: "column",
-      padding: "14px 14px 14px 14px",
-      gap: 10,
-      boxSizing: "border-box",
-    }}>
-      {/* Top photo — polaroid style */}
-      <div style={{
-        flex: 1,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: 0,
-      }}>
-        <div style={{
-          background: "white",
-          padding: "6px 6px 22px 6px",
-          boxShadow: "0 3px 12px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.1)",
-          transform: tiltTop,
-          width: "100%",
-          height: "100%",
-          boxSizing: "border-box",
-        }}>
-          <img
-            src={data.top}
-            alt=""
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              display: "block",
-            }}
-            loading="lazy"
-          />
-        </div>
-      </div>
-
-      {/* Bottom photo — polaroid style */}
-      <div style={{
-        flex: 1,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: 0,
-      }}>
-        <div style={{
-          background: "white",
-          padding: "6px 6px 22px 6px",
-          boxShadow: "0 3px 12px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.1)",
-          transform: tiltBot,
-          width: "100%",
-          height: "100%",
-          boxSizing: "border-box",
-        }}>
-          <img
-            src={data.bottom}
-            alt=""
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              display: "block",
-            }}
-            loading="lazy"
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function CoverPage() {
   return (
@@ -138,8 +54,7 @@ function CoverPage() {
 function EndPage() {
   return (
     <div style={{
-      width: "100%", height: "100%",
-      background: paperBg,
+      width: "100%", height: "100%", background: paperBg,
       display: "flex", flexDirection: "column",
       alignItems: "center", justifyContent: "center", gap: 10,
     }}>
@@ -150,47 +65,108 @@ function EndPage() {
   );
 }
 
-// Renders the content of a given page index
-function PageContent({ index, mirror }) {
+function PhotoPage({ data }) {
+  return (
+    <div style={{
+      width: "100%", height: "100%", background: paperBg,
+      display: "flex", flexDirection: "column",
+      padding: "14px", gap: 10, boxSizing: "border-box",
+    }}>
+      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 0 }}>
+        <div style={{
+          background: "white", padding: "6px 6px 22px 6px",
+          boxShadow: "0 3px 12px rgba(0,0,0,0.2)",
+          transform: `rotate(${data.topTilt || "-1deg"})`,
+          width: "100%", height: "100%", boxSizing: "border-box",
+        }}>
+          <img src={data.top} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} loading="lazy" />
+        </div>
+      </div>
+      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 0 }}>
+        <div style={{
+          background: "white", padding: "6px 6px 22px 6px",
+          boxShadow: "0 3px 12px rgba(0,0,0,0.2)",
+          transform: `rotate(${data.bottomTilt || "1deg"})`,
+          width: "100%", height: "100%", boxSizing: "border-box",
+        }}>
+          <img src={data.bottom} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} loading="lazy" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PageContent({ index }) {
   const data = pages[index];
+  if (data == null) return <div style={{ width: "100%", height: "100%", background: paperBg }} />;
   if (data === "cover") return <CoverPage />;
   if (data === "end") return <EndPage />;
-  return <PhotoPage data={data} mirror={mirror} />;
+  return <PhotoPage data={data} />;
 }
 
 export default function App() {
-  const [current, setCurrent] = useState(0);
-  // turning: null | { dir: 1 | -1, phase: 'start'|'end' }
-  const [turning, setTurning] = useState(null);
+  const [displayIndex, setDisplayIndex] = useState(0);
+  const [animating, setAnimating] = useState(false);
+
+  // During animation these refs hold what we need without triggering re-renders
+  const animIndexRef = useRef(null);   // the page element that physically rotates
+  const underIndexRef = useRef(0);     // the page shown flat underneath
+  const rotationRef = useRef(0);
+  const animDivRef = useRef(null);
+
   const touchStartX = useRef(null);
   const total = pages.length;
 
-  // The page being "peeled" during a turn animation
-  const turningPageIndex = turning
-    ? turning.dir === 1 ? current : current - 1
-    : null;
+  // Force re-render trick to update animating div's transform
+  const [, forceUpdate] = useState(0);
 
-  const doTurn = (dir) => {
-    const next = current + dir;
-    if (next < 0 || next >= total || turning) return;
-    setTurning({ dir, phase: "start" });
-  };
+  const doTurn = useCallback((dir) => {
+    const next = displayIndex + dir;
+    if (next < 0 || next >= total || animating) return;
 
-  useEffect(() => {
-    if (!turning || turning.phase !== "start") return;
-    // Kick off the animation on next frame
-    const raf = requestAnimationFrame(() => {
-      setTurning((t) => t ? { ...t, phase: "animating" } : null);
+    if (dir === 1) {
+      // Forward: current page peels away, next is underneath
+      animIndexRef.current = displayIndex;
+      underIndexRef.current = next;
+      rotationRef.current = 0;
+    } else {
+      // Backward: previous page peels back in, current stays underneath
+      animIndexRef.current = next;
+      underIndexRef.current = displayIndex;
+      rotationRef.current = -180;
+    }
+
+    setAnimating(true);
+    forceUpdate(n => n + 1);
+
+    // Two rAFs to ensure the initial transform is painted before we animate
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (animDivRef.current) {
+          animDivRef.current.style.transition = "transform 0.65s cubic-bezier(0.645, 0.045, 0.355, 1.000)";
+          animDivRef.current.style.transform = `rotateY(${dir === 1 ? -180 : 0}deg)`;
+        }
+      });
     });
-    return () => cancelAnimationFrame(raf);
-  }, [turning]);
+  }, [displayIndex, animating, total]);
 
-  // When animation ends, commit the page change
-  const onTransitionEnd = () => {
-    if (!turning) return;
-    setCurrent((c) => c + turning.dir);
-    setTurning(null);
-  };
+  const onTransitionEnd = useCallback(() => {
+    const landed = rotationRef.current === -180
+      ? underIndexRef.current   // forward turn: under page is now the current
+      : animIndexRef.current;   // backward turn: anim page landed flat = current
+
+    // Reset anim div instantly (no transition) before unmounting
+    if (animDivRef.current) {
+      animDivRef.current.style.transition = "none";
+    }
+
+    setDisplayIndex(underIndexRef.current === displayIndex
+      ? animIndexRef.current   // backward
+      : underIndexRef.current  // forward
+    );
+    setAnimating(false);
+    animIndexRef.current = null;
+  }, [displayIndex]);
 
   const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
   const onTouchEnd = (e) => {
@@ -198,38 +174,21 @@ export default function App() {
     if (Math.abs(diff) > 40) doTurn(diff > 0 ? 1 : -1);
   };
 
-  const progress = total > 1 ? (current / (total - 1)) * 100 : 0;
-
-  // During a forward turn: current page peels away, next page (current+1) is underneath
-  // During a backward turn: current-1 page peels back in, current page is underneath initially
-  const underPageIndex = turning
-    ? turning.dir === 1 ? current + 1 : current - 1
-    : current;
-
-  // The turning page starts flat (0deg) and rotates to -180deg (forward) or reverse
-  const turningRotation = turning
-    ? turning.phase === "animating"
-      ? turning.dir === 1 ? -180 : 0
-      : turning.dir === 1 ? 0 : -180
-    : 0;
+  const progress = total > 1 ? (displayIndex / (total - 1)) * 100 : 0;
 
   return (
     <div
       style={{
         minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#120d06",
-        fontFamily: "Georgia, serif",
-        userSelect: "none",
-        WebkitUserSelect: "none",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        background: "#120d06", fontFamily: "Georgia, serif",
+        userSelect: "none", WebkitUserSelect: "none",
+        touchAction: "pan-y",
       }}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      {/* Title */}
       <p style={{ color: "rgba(232,213,163,0.4)", fontSize: 10, letterSpacing: 6, textTransform: "uppercase", marginBottom: 24 }}>
         Memories
       </p>
@@ -251,157 +210,125 @@ export default function App() {
           </span>
         </div>
 
-        {/* Drop shadow behind book */}
+        {/* Drop shadow */}
         <div style={{
           position: "absolute", left: SPINE_W, top: 10,
           width: PAGE_W, height: BOOK_H,
-          background: "rgba(0,0,0,0.6)",
-          borderRadius: "0 8px 8px 0",
-          filter: "blur(16px)",
-          zIndex: 0,
+          background: "rgba(0,0,0,0.55)", borderRadius: "0 8px 8px 0",
+          filter: "blur(16px)", zIndex: 0,
         }} />
 
-        {/* ── Page stack ───────────────────────────────────── */}
-        {/* 
-          We render at most 3 layers:
-          1. Under page (always flat, behind everything) — zIndex 1
-          2. Turning page front face — zIndex 2, rotates from 0 to -180
-          3. Turning page back face (mirror) — zIndex 2, rotateY(180) so it shows when flipped
-        */}
+        {/* Page area */}
         <div style={{
-          position: "absolute",
-          left: SPINE_W,
-          top: 0,
-          width: PAGE_W,
-          height: BOOK_H,
+          position: "absolute", left: SPINE_W, top: 0,
+          width: PAGE_W, height: BOOK_H,
           perspective: 1600,
+          overflow: "hidden",
+          borderRadius: "0 8px 8px 0",
         }}>
-          {/* Under page — what's revealed underneath the turning page */}
+
+          {/* ── Layer 1: Under page — always flat, always visible ── */}
           <div style={{
-            position: "absolute", inset: 0,
-            borderRadius: "0 8px 8px 0",
-            overflow: "hidden",
-            zIndex: 1,
+            position: "absolute", inset: 0, zIndex: 1,
+            borderRadius: "0 8px 8px 0", overflow: "hidden",
           }}>
-            <PageContent index={underPageIndex} mirror={false} />
+            <PageContent index={animating ? underIndexRef.current : displayIndex} />
           </div>
 
-          {/* Turning page — the page being peeled */}
-          {turning && (
+          {/* ── Layer 2: Peeling page — only during animation ── */}
+          {animating && (
             <div
+              ref={animDivRef}
               style={{
                 position: "absolute", inset: 0,
                 transformOrigin: "left center",
                 transformStyle: "preserve-3d",
-                transform: `rotateY(${turningRotation}deg)`,
-                transition: turning.phase === "animating" ? "transform 0.65s cubic-bezier(0.645,0.045,0.355,1)" : "none",
+                // Start position set via ref imperatively, no transition yet
+                transform: `rotateY(${rotationRef.current}deg)`,
+                transition: "none",
                 zIndex: 2,
+                willChange: "transform",
               }}
               onTransitionEnd={onTransitionEnd}
             >
-              {/* Front face of turning page */}
+              {/* Front face */}
               <div style={{
                 position: "absolute", inset: 0,
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden",
-                borderRadius: "0 8px 8px 0",
-                overflow: "hidden",
+                borderRadius: "0 8px 8px 0", overflow: "hidden",
               }}>
-                <PageContent index={turningPageIndex} mirror={false} />
-                {/* Fold shadow on right edge as page turns */}
+                <PageContent index={animIndexRef.current} />
+                {/* Fold shadow */}
                 <div style={{
-                  position: "absolute", right: 0, top: 0,
-                  width: 32, height: "100%",
+                  position: "absolute", right: 0, top: 0, width: 40, height: "100%",
                   background: "linear-gradient(to right, transparent, rgba(0,0,0,0.12))",
                   pointerEvents: "none",
                 }} />
               </div>
 
-              {/* Back face of turning page (paper texture, slightly different shade) */}
+              {/* Back face — warm paper */}
               <div style={{
                 position: "absolute", inset: 0,
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden",
                 transform: "rotateY(180deg)",
-                borderRadius: "0 8px 8px 0",
-                overflow: "hidden",
+                borderRadius: "0 8px 8px 0", overflow: "hidden",
                 background: paperBg2,
               }}>
-                {/* Subtle paper lines */}
                 <div style={{
                   width: "100%", height: "100%",
-                  backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(0,0,0,0.03) 31px, rgba(0,0,0,0.03) 32px)",
+                  backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(0,0,0,0.025) 31px, rgba(0,0,0,0.025) 32px)",
                 }} />
-                {/* Left edge shadow when flipped */}
                 <div style={{
-                  position: "absolute", left: 0, top: 0,
-                  width: 32, height: "100%",
-                  background: "linear-gradient(to left, transparent, rgba(0,0,0,0.08))",
+                  position: "absolute", left: 0, top: 0, width: 40, height: "100%",
+                  background: "linear-gradient(to left, transparent, rgba(0,0,0,0.07))",
                   pointerEvents: "none",
                 }} />
               </div>
             </div>
           )}
 
-          {/* Static page when not turning — just shows current */}
-          {!turning && (
-            <div style={{
-              position: "absolute", inset: 0,
-              borderRadius: "0 8px 8px 0",
-              overflow: "hidden",
-              zIndex: 2,
-              boxShadow: "4px 0 20px rgba(0,0,0,0.25)",
-              cursor: "pointer",
-            }} onClick={() => doTurn(1)}>
-              <PageContent index={current} mirror={false} />
-              {/* Right edge shadow */}
-              <div style={{
-                position: "absolute", right: 0, top: 0,
-                width: 24, height: "100%",
-                background: "linear-gradient(to right, transparent, rgba(0,0,0,0.08))",
-                pointerEvents: "none",
-              }} />
-            </div>
+          {/* Tap target when idle */}
+          {!animating && (
+            <div
+              style={{
+                position: "absolute", inset: 0, zIndex: 3,
+                cursor: displayIndex < total - 1 ? "pointer" : "default",
+              }}
+              onClick={() => doTurn(1)}
+            />
           )}
         </div>
       </div>
 
       {/* Progress bar */}
-      <div style={{ marginTop: 28, width: BOOK_W - SPINE_W, position: "relative" }}>
+      <div style={{ marginTop: 28, width: PAGE_W, position: "relative" }}>
         <div style={{
           width: "100%", height: 1.5,
           background: "rgba(232,213,163,0.1)",
-          borderRadius: 2, position: "relative", overflow: "visible",
+          borderRadius: 2, position: "relative",
         }}>
           <div style={{
-            height: "100%",
-            width: `${progress}%`,
-            background: "linear-gradient(to right, rgba(232,213,163,0.2), rgba(232,213,163,0.6))",
-            borderRadius: 2,
-            transition: "width 0.5s ease",
+            height: "100%", width: `${progress}%`,
+            background: "linear-gradient(to right, rgba(232,213,163,0.2), rgba(232,213,163,0.65))",
+            borderRadius: 2, transition: "width 0.5s ease",
           }} />
-          {/* Thumb */}
           <div style={{
-            position: "absolute",
-            top: "50%",
-            left: `${progress}%`,
+            position: "absolute", top: "50%", left: `${progress}%`,
             transform: "translate(-50%, -50%)",
-            width: 7, height: 7,
-            borderRadius: "50%",
+            width: 7, height: 7, borderRadius: "50%",
             background: "#e8d5a3",
             boxShadow: "0 0 8px rgba(232,213,163,0.5)",
             transition: "left 0.5s ease",
           }} />
         </div>
-
         <p style={{
           textAlign: "center", marginTop: 12,
-          color: "rgba(232,213,163,0.22)",
-          fontSize: 9, letterSpacing: 3,
-          textTransform: "uppercase",
-          fontFamily: "monospace",
+          color: "rgba(232,213,163,0.22)", fontSize: 9,
+          letterSpacing: 3, textTransform: "uppercase", fontFamily: "monospace",
         }}>
-          {current === 0 ? "cover" : current >= total - 1 ? "the end" : `${current} / ${total - 2}`}
+          {displayIndex === 0 ? "cover" : displayIndex >= total - 1 ? "the end" : `${displayIndex} / ${total - 2}`}
         </p>
       </div>
 
