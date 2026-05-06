@@ -9,7 +9,7 @@ const photos = [
       tilt: "-rotate-2",
     },
     back: {
-      url: "https://drive.google.com/uc?export=view&id=YOUR_ID_2",
+      url: "https://lh3.googleusercontent.com/d/1sEfhAe256d9bhD0BiuCdlNF1QQksERUn",
       caption: "Golden hour vibes",
       date: "July 2023",
       tilt: "rotate-2",
@@ -17,13 +17,13 @@ const photos = [
   },
   {
     front: {
-      url: "https://drive.google.com/uc?export=view&id=YOUR_ID_3",
+      url: "https://lh3.googleusercontent.com/d/FILE_ID",
       caption: "Birthday night 🎂",
       date: "March 2024",
       tilt: "rotate-1",
     },
     back: {
-      url: "https://drive.google.com/uc?export=view&id=YOUR_ID_4",
+      url: "https://lh3.googleusercontent.com/d/FILE_ID",
       caption: "All of us together",
       date: "March 2024",
       tilt: "-rotate-1",
