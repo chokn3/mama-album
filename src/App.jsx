@@ -468,7 +468,7 @@ export default function App() {
                 fontWeight: 400,
               }}
             >
-              Memories
+              Album ni Ngipin
             </span>
           </div>
 
