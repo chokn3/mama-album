@@ -667,7 +667,7 @@ function Album() {
             position: "relative",
           }}
         >
-          happy mother's day, ngips!
+          happy mother's day, mama!
         </p>
 
         <div style={{ width: BOOK_W, height: BOOK_H, position: "relative" }}>
@@ -698,7 +698,7 @@ function Album() {
                 fontWeight: 400,
               }}
             >
-              Album ni Ngipin
+              Mama Racqy's Memories
             </span>
           </div>
 
