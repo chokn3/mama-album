@@ -195,7 +195,7 @@ function EndPage() {
           fontWeight: 400,
         }}
       >
-        The End
+        Relax beh
       </span>
       <span
         style={{
@@ -206,7 +206,7 @@ function EndPage() {
           fontWeight: 300,
         }}
       >
-        to be continued…
+        itutuloy ko pa to!!
       </span>
     </div>
   );
