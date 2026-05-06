@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 const photos = [
   {
     front: {
-      url: "https://drive.google.com/uc?export=view&id=1rHVz4J_CSTl91QDFzi50HSmx8yBF1QrS",
+      url: "https://lh3.googleusercontent.com/d/1rHVz4J_CSTl91QDFzi50HSmx8yBF1QrS",
       caption: "Summer at the beach",
       date: "July 2023",
       tilt: "-rotate-2",
