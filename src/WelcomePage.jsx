@@ -262,7 +262,7 @@ export default function WelcomePage({ onEnter }) {
             margin: "0 0 48px 0",
             animation: visible ? "fadeSlideUp 0.8s 0.6s both" : undefined,
           }}>
-            happy mother's day mama, we love you ♡
+            mother's day 2026
           </p>
 
           {/* CTA Button */}
