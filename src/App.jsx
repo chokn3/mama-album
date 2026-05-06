@@ -384,7 +384,7 @@ function EndPage() {
           fontFamily: "'Cormorant Garamond', Georgia, serif",
         }}
       >
-        ❧
+        thank you 
       </span>
       <span
         style={{
@@ -394,9 +394,12 @@ function EndPage() {
           fontStyle: "italic",
           fontFamily: "'Cormorant Garamond', Georgia, serif",
           fontWeight: 400,
+          textAlign: "center",
+          padding: "0 16px",
+          lineHeight: 1.6,
         }}
       >
-        thank you for flipping through these pages with us, mama
+        for flipping through these pages with us, mama
       </span>
       <span
         style={{
