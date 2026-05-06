@@ -47,6 +47,24 @@ const pages = [
     topTilt: "-1.2deg",
     bottomTilt: "1.5deg",
   },
+  {
+    top: "https://lh3.googleusercontent.com/d/1kwf6GfzqAHdRJAPnWM_yMdGBcH9V5p_b",
+    bottom: "https://lh3.googleusercontent.com/d/1L8ZapD4OWuDV2CD7eoDQHd9U7vMdWJYr",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/1QrSjRg10_2ULpr6NcwJHYk7vHXUJKNrQ",
+    bottom: "https://lh3.googleusercontent.com/d/1ap29_QV7UrvxPkvFYo7B9-oK7pXLA1Pt",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/11TUv8j7rUILk_hxlRFWAYIkI6XdtTrd7",
+    bottom: "https://lh3.googleusercontent.com/d/1ChAskFm3c6Ib8zBYxl8ajlKEko_qZR2R",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
   "end",
 ];
 // ───────────────────────────────────────────────────────────────
