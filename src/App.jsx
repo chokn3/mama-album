@@ -35,6 +35,18 @@ const pages = [
     topTilt: "-1.2deg",
     bottomTilt: "1.5deg",
   },
+  {
+    top: "https://lh3.googleusercontent.com/d/1ap29_QV7UrvxPkvFYo7B9-oK7pXLA1Pt",
+    bottom: "https://lh3.googleusercontent.com/d/1a7l56ywOD1UR4X-_90O2X0tJqeAcWmnS",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/1rsYWkAY_gjPb7VgeIbu6sY55lwuBDFmN",
+    bottom: "https://lh3.googleusercontent.com/d/15sR1V1e1OHOsw0jOToRXycQ9tAJJvZ7R",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
   "end",
 ];
 // ───────────────────────────────────────────────────────────────
