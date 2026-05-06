@@ -363,7 +363,7 @@ function CoverPage() {
   );
 }
 
-function EndPage() {
+function EndPage({ onClose }) {
   return (
     <div
       style={{
@@ -374,32 +374,27 @@ function EndPage() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 10,
+        gap: 12,
+        padding: "0 16px",
+        boxSizing: "border-box",
       }}
     >
-      <span
-        style={{
-          color: "#d4789a",
-          fontSize: 30,
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
-        thank you 
+      <span style={{ color: "#d4789a", fontSize: 30, fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+        ❧
       </span>
       <span
         style={{
           color: "#a85070",
-          fontSize: 16,
-          letterSpacing: 4,
+          fontSize: 15,
+          letterSpacing: 3,
           fontStyle: "italic",
           fontFamily: "'Cormorant Garamond', Georgia, serif",
           fontWeight: 400,
           textAlign: "center",
-          padding: "0 16px",
           lineHeight: 1.6,
         }}
       >
-        for flipping through these pages with us, mama
+        thank you for flipping through these pages with us, mama
       </span>
       <span
         style={{
@@ -412,6 +407,38 @@ function EndPage() {
       >
         - Jake & Maxinne
       </span>
+
+      {/* Close button */}
+      <div style={{ marginTop: 16 }}>
+        <button
+          onClick={onClose}
+          style={{
+            background: "linear-gradient(135deg, #e8a0b8, #c86090)",
+            border: "none",
+            color: "rgba(255,240,248,0.95)",
+            fontFamily: "'Jost', sans-serif",
+            fontWeight: 400,
+            fontSize: 9,
+            letterSpacing: 4,
+            textTransform: "uppercase",
+            padding: "10px 24px",
+            borderRadius: 100,
+            cursor: "pointer",
+            boxShadow: "0 4px 16px rgba(180,80,110,0.3)",
+            transition: "transform 0.2s ease, box-shadow 0.2s ease",
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.transform = "translateY(-2px)";
+            e.currentTarget.style.boxShadow = "0 8px 24px rgba(180,80,110,0.4)";
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.boxShadow = "0 4px 16px rgba(180,80,110,0.3)";
+          }}
+        >
+          close the album ↩
+        </button>
+      </div>
     </div>
   );
 }
@@ -484,14 +511,14 @@ function PhotoPage({ data, onPhotoClick }) {
   );
 }
 
-function PageContent({ index, onPhotoClick }) {
+function PageContent({ index, onPhotoClick, onClose }) {
   const data = pages[index];
   if (data == null)
     return (
       <div style={{ width: "100%", height: "100%", background: `linear-gradient(145deg, ${paperBg}, ${paperBg2})` }} />
     );
   if (data === "cover") return <CoverPage />;
-  if (data === "end") return <EndPage />;
+  if (data === "end") return <EndPage onClose={onClose} />;
   return <PhotoPage data={data} onPhotoClick={onPhotoClick} />;
 }
 
@@ -528,6 +555,15 @@ function Album() {
   const [, forceUpdate] = useState(0);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [photoZoomed, setPhotoZoomed] = useState(false);
+  const [closing, setClosing] = useState(false);
+
+  const handleClose = useCallback(() => {
+  setClosing(true);
+  setTimeout(() => {
+    setDisplayIndex(0);
+    setClosing(false);
+  }, 700);
+}, []);
 
   const doTurn = useCallback(
     (dir) => {
@@ -619,6 +655,11 @@ function Album() {
           0%, 100% { box-shadow: 0 20px 60px rgba(60,10,30,0.5), 0 4px 20px rgba(180,80,110,0.3), 0 0 0 0px rgba(212,120,154,0); }
           50%       { box-shadow: 0 20px 60px rgba(60,10,30,0.5), 0 4px 20px rgba(180,80,110,0.3), 0 0 20px 6px rgba(212,120,154,0.45); }
         } 
+        @keyframes bookClose {
+          0%   { opacity: 1; transform: scale(1) rotateY(0deg); }
+          50%  { opacity: 0.6; transform: scale(0.92) rotateY(-15deg); }
+          100% { opacity: 0; transform: scale(0.85) rotateY(-30deg); }
+        }
       `}</style>
 
       <div
@@ -636,7 +677,9 @@ function Album() {
           touchAction: "pan-y",
           position: "relative",
           overflow: "hidden",
-          animation: "pageEnterBg 1s cubic-bezier(0.23,1,0.32,1) forwards",
+          animation: closing
+            ? "bookClose 0.7s cubic-bezier(0.4,0,0.2,1) forwards"
+            : "pageEnterBg 1s cubic-bezier(0.23,1,0.32,1) forwards",
         }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
@@ -754,7 +797,7 @@ function Album() {
                 overflow: "hidden",
               }}
             >
-              <PageContent index={animating ? underIndexRef.current : displayIndex} onPhotoClick={setSelectedPhoto} />
+              <PageContent index={animating ? underIndexRef.current : displayIndex} onPhotoClick={setSelectedPhoto} onClose={handleClose} />
             </div>
 
             {animating && (
@@ -782,7 +825,7 @@ function Album() {
                     overflow: "hidden",
                   }}
                 >
-                  <PageContent index={animIndexRef.current} onPhotoClick={setSelectedPhoto} />
+                  <PageContent index={animIndexRef.current} onPhotoClick={setSelectedPhoto} onClose={handleClose} />
                   <div
                     style={{
                       position: "absolute",
