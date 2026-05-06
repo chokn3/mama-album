@@ -313,21 +313,14 @@ function BackgroundMusic({ playing }) {
 
   useEffect(() => {
     if (!playing || !audioRef.current) return;
-    
     audioRef.current.volume = 0.5;
-    const playPromise = audioRef.current.play();
-    
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => console.log("✅ Music playing!"))
-        .catch((err) => console.log("❌ Music error:", err));
-    }
+    audioRef.current.play().catch((err) => console.log("❌ Music error:", err));
   }, [playing]);
 
   return (
     <audio
       ref={audioRef}
-      src="https://docs.google.com/uc?export=open&id=1wbA1VSagyL5yHsC3gaUP8CPTo04liAkY"
+      src="https://res.cloudinary.com/dgd7zzp5t/video/upload/q_auto/f_auto/v1778087026/Yesterday_Once_More_1_xrjnpj.mp3"
       loop
       preload="auto"
       style={{ display: "none" }}
