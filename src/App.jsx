@@ -312,16 +312,24 @@ function BackgroundMusic({ playing }) {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    if (playing && audioRef.current) {
-      audioRef.current.play().catch(() => {});
+    if (!playing || !audioRef.current) return;
+    
+    audioRef.current.volume = 0.5;
+    const playPromise = audioRef.current.play();
+    
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => console.log("✅ Music playing!"))
+        .catch((err) => console.log("❌ Music error:", err));
     }
   }, [playing]);
 
   return (
     <audio
       ref={audioRef}
-      src="https://drive.google.com/uc?export=download&id=1wbA1VSagyL5yHsC3gaUP8CPTo04liAkY"
+      src="https://docs.google.com/uc?export=open&id=1wbA1VSagyL5yHsC3gaUP8CPTo04liAkY"
       loop
+      preload="auto"
       style={{ display: "none" }}
     />
   );
