@@ -99,7 +99,7 @@ function CoverPage() {
           fontStyle: "italic",
         }}
       >
-        Memories
+        Mama's Album
       </span>
       <span
         style={{
@@ -111,7 +111,7 @@ function CoverPage() {
           fontWeight: 200,
         }}
       >
-        a photo album
+        a mother's day special
       </span>
       <span
         style={{
@@ -125,7 +125,7 @@ function CoverPage() {
           fontWeight: 200,
         }}
       >
-        tap to open →
+        swipe to open →
       </span>
     </div>
   );
@@ -441,7 +441,7 @@ export default function App() {
             position: "relative",
           }}
         >
-          for mama, with love
+          happy mother's day, ngips!
         </p>
 
         {/* Book */}
