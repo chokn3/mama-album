@@ -18,8 +18,8 @@ const pages = [
     bottomTilt: "-0.8deg",
   },
   {
-    top: "https://lh3.googleusercontent.com/d/FILE_ID_5",
-    bottom: "https://lh3.googleusercontent.com/d/FILE_ID_6",
+    top: "https://lh3.googleusercontent.com/d/1ig1gWz1Y5j58EwgzQGgmYa47vPpWRYA9",
+    bottom: "https://lh3.googleusercontent.com/d/1HcRVes990YRxuLMyqim6jMRkGK1s8uBn",
     topTilt: "-1.2deg",
     bottomTilt: "1.5deg",
   },
