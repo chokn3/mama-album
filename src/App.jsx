@@ -65,6 +65,54 @@ const pages = [
     topTilt: "-1.2deg",
     bottomTilt: "1.5deg",
   },
+  {
+    top: "https://lh3.googleusercontent.com/d/1pOCb7fuaL8TuEPXv7iK_QH6D0-1RWOvM",
+    bottom: "https://lh3.googleusercontent.com/d/1PuZqDVvrjD2qybiZzN9r39VhWgqtHg8u",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/1VZXSH3KTOlh8edS-oVIsTXs4tbDTAIGQ",
+    bottom: "https://lh3.googleusercontent.com/d/1IZE19BNLZrz5a56lZKy15NIaeWaE7DVE",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/1EQoVB2nm6yMr1ZTSoyQy4lK7gKof-Hol",
+    bottom: "https://lh3.googleusercontent.com/d/1gsEpV-KG9jxqy_TbFwQySqoQrNecIDMv",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/1KVF5RSePJeRanZzfOHHP5xqIgdYkoJDr",
+    bottom: "https://lh3.googleusercontent.com/d/1kZpylD7j4c68jZOjwyM3MkuhowHgXQCB",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/1nIlWI6HqrnZRd8XJ2XtiVaINj6zcSCvW",
+    bottom: "https://lh3.googleusercontent.com/d/17P4fDK2UsCQLyLy4fMgZjaR6Bfr65wTC",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/1Imbg6AENqriGs99cDFQo7bGHKpUKpqXc",
+    bottom: "https://lh3.googleusercontent.com/d/1P0a1cgn505TqICZGGjbAs-zLjuU5mveM",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/1kCd7fivb_jSuq_NTAO5-dzn0JdEIGgHH",
+    bottom: "https://lh3.googleusercontent.com/d/1YtSBpG9RDwviRB2hS0srsETMgN0DLpuH",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+  {
+    top: "https://lh3.googleusercontent.com/d/1eWTK0lFEF_pM56EoVZdo3jV1uOkDQVQH",
+    bottom: "https://lh3.googleusercontent.com/d/1UwfdQSwY0TYpjvLXnRBX9e_sJ16bEMOp",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
   "end",
 ];
 // ───────────────────────────────────────────────────────────────
