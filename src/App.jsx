@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import WelcomePage from "./WelcomePage.jsx";
 
 // ─── YOUR PHOTOS ───────────────────────────────────────────────
@@ -306,6 +306,37 @@ function PageContent({ index }) {
   if (data === "cover") return <CoverPage />;
   if (data === "end") return <EndPage />;
   return <PhotoPage data={data} />;
+}
+
+function BackgroundMusic({ playing }) {
+  const playerRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!playing) return;
+
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+
+    window.onYouTubeIframeAPIReady = () => {
+      playerRef.current = new window.YT.Player(containerRef.current, {
+        height: "0",
+        width: "0",
+        videoId: "sEhDuBKZMO0",
+        playerVars: { autoplay: 1, loop: 1, playlist: "sEhDuBKZMO0", controls: 0 },
+        events: {
+          onReady: (e) => e.target.playVideo(),
+        },
+      });
+    };
+
+    if (window.YT && window.YT.Player) {
+      window.onYouTubeIframeAPIReady();
+    }
+  }, [playing]);
+
+  return <div ref={containerRef} style={{ display: "none" }} />;
 }
 
 function Album() {
@@ -711,5 +742,10 @@ function Album() {
 export default function App() {
   const [entered, setEntered] = useState(false);
   if (!entered) return <WelcomePage onEnter={() => setEntered(true)} />;
-  return <Album />;
+  return (
+    <>
+      <BackgroundMusic playing={true} />
+      <Album />
+    </>
+  );
 }
