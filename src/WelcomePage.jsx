@@ -206,7 +206,7 @@ export default function WelcomePage({ onEnter }) {
             marginBottom: 16,
             animation: visible ? "fadeSlideUp 0.8s 0.15s both" : undefined,
           }}>
-            a gift for
+            a gift for the best
           </p>
 
           {/* Big title */}
@@ -246,8 +246,8 @@ export default function WelcomePage({ onEnter }) {
             margin: "0 0 8px 0",
             animation: visible ? "fadeSlideUp 0.8s 0.5s both" : undefined,
           }}>
-            a little something made with love,<br />
-            just for you 🌸
+            we prepared a virtual photo album<br />
+            for you to walk down memory lane
           </p>
 
           {/* Sub-label */}
@@ -262,7 +262,7 @@ export default function WelcomePage({ onEnter }) {
             margin: "0 0 48px 0",
             animation: visible ? "fadeSlideUp 0.8s 0.6s both" : undefined,
           }}>
-            happy mother's day 2025
+            happy mother's day mama, we love you ♡
           </p>
 
           {/* CTA Button */}
@@ -303,7 +303,7 @@ export default function WelcomePage({ onEnter }) {
                   gap: 10,
                 }}
               >
-                <span>Open Album</span>
+                <span>See your memories</span>
                 <span style={{ fontSize: 14 }}>→</span>
               </div>
             </button>
@@ -320,7 +320,7 @@ export default function WelcomePage({ onEnter }) {
             color: "rgba(120,40,70,0.6)",
             animation: visible ? "fadeIn 1s 1.1s both" : undefined,
           }}>
-            made with ♡
+            Made by Jake & Max ♡
           </p>
         </div>
 
