@@ -961,7 +961,7 @@ function Album() {
       fontWeight: 300,
       pointerEvents: "none",
     }}>
-      tap photo to zoom · tap outside to close
+      do you remember this picture, mama?
     </p>
 
     {/* Photo polaroid */}
