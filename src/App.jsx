@@ -396,7 +396,7 @@ function EndPage() {
           fontWeight: 400,
         }}
       >
-        Relax beh
+        thank you for flipping through these pages with us, mama
       </span>
       <span
         style={{
@@ -407,7 +407,7 @@ function EndPage() {
           fontWeight: 300,
         }}
       >
-        itutuloy ko pa to!!
+        - Jake & Maxinne
       </span>
     </div>
   );
