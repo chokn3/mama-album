@@ -1,7 +1,3 @@
-// WelcomePage.jsx
-// Drop this file into your project alongside App.jsx.
-// Then wrap it in your main entry (e.g. main.jsx or index.jsx) like shown at the bottom.
-
 import { useState, useEffect } from "react";
 
 // Inject Google Fonts (same as App.jsx)
