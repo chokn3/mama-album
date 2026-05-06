@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import WelcomePage from "./WelcomePage.jsx";
 
 // ─── YOUR PHOTOS ───────────────────────────────────────────────
 const COVER_PHOTO = "https://lh3.googleusercontent.com/d/12jSAoRv6CdYcoH9LIsSJZaa4o0OvbnNh"; // ← replace with your mom's photo ID
@@ -23,13 +24,13 @@ const pages = [
     topTilt: "-1.2deg",
     bottomTilt: "1.5deg",
   },
-    {
+  {
     top: "https://lh3.googleusercontent.com/d/1YjAsp_5KLi18GdYcmuLomrEOwQodCOlq",
     bottom: "https://lh3.googleusercontent.com/d/1HWa-6hw5LvUOfmWfJyUyVJkM_Eh_k9cq",
     topTilt: "-1.2deg",
     bottomTilt: "1.5deg",
   },
-      {
+  {
     top: "https://lh3.googleusercontent.com/d/1g5mwSOBo4ksJsvruZ3VNRVwQUPmSXh5E",
     bottom: "https://lh3.googleusercontent.com/d/1S71ppfbfGR-MeCzZyySOpc3HSmocB6LY",
     topTilt: "-1.2deg",
@@ -84,7 +85,6 @@ function CoverPage() {
         position: "relative",
       }}
     >
-      {/* Decorative borders */}
       <div
         style={{
           position: "absolute",
@@ -104,7 +104,6 @@ function CoverPage() {
         }}
       />
 
-      {/* Circular photo frame */}
       <div
         style={{
           width: 110,
@@ -139,7 +138,6 @@ function CoverPage() {
         />
       </div>
 
-      {/* Title */}
       <span
         style={{
           color: "rgba(255,240,248,0.95)",
@@ -311,7 +309,7 @@ function PageContent({ index }) {
   return <PhotoPage data={data} />;
 }
 
-export default function App() {
+function Album() {
   const [displayIndex, setDisplayIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
 
@@ -416,7 +414,6 @@ export default function App() {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        {/* Ambient overlay */}
         <div
           style={{
             position: "absolute",
@@ -427,7 +424,6 @@ export default function App() {
           }}
         />
 
-        {/* Floating petals */}
         {petals.map((p, i) => (
           <div
             key={i}
@@ -446,7 +442,6 @@ export default function App() {
           />
         ))}
 
-        {/* ── Top label ── */}
         <p
           style={{
             color: "#b05878",
@@ -462,10 +457,8 @@ export default function App() {
           happy mother's day, ngips!
         </p>
 
-        {/* Book */}
         <div style={{ width: BOOK_W, height: BOOK_H, position: "relative" }}>
 
-          {/* Spine */}
           <div
             style={{
               position: "absolute",
@@ -496,7 +489,6 @@ export default function App() {
             </span>
           </div>
 
-          {/* Drop shadow */}
           <div
             style={{
               position: "absolute",
@@ -509,7 +501,6 @@ export default function App() {
             }}
           />
 
-          {/* Page area */}
           <div
             style={{
               position: "absolute",
@@ -520,7 +511,6 @@ export default function App() {
               borderRadius: "0 8px 8px 0",
             }}
           >
-            {/* Under page */}
             <div
               style={{
                 position: "absolute",
@@ -533,7 +523,6 @@ export default function App() {
               <PageContent index={animating ? underIndexRef.current : displayIndex} />
             </div>
 
-            {/* Peeling page */}
             {animating && (
               <div
                 ref={animDivRef}
@@ -549,7 +538,6 @@ export default function App() {
                 }}
                 onTransitionEnd={onTransitionEnd}
               >
-                {/* Front face */}
                 <div
                   style={{
                     position: "absolute",
@@ -573,7 +561,6 @@ export default function App() {
                   />
                 </div>
 
-                {/* Back face */}
                 <div
                   style={{
                     position: "absolute",
@@ -607,7 +594,6 @@ export default function App() {
               </div>
             )}
 
-            {/* Tap zones — left quarter goes back, right goes forward */}
             {!animating && (
               <>
                 {displayIndex > 0 && (
@@ -649,7 +635,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Progress bar */}
         <div style={{ marginTop: 28, width: PAGE_W, position: "relative" }}>
           <div
             style={{
@@ -686,7 +671,6 @@ export default function App() {
             />
           </div>
 
-          {/* ── Progress label ── */}
           <p
             style={{
               textAlign: "center",
@@ -707,7 +691,6 @@ export default function App() {
           </p>
         </div>
 
-        {/* ── Bottom hint ── */}
         <p
           style={{
             marginTop: 8,
@@ -724,4 +707,10 @@ export default function App() {
       </div>
     </>
   );
+}
+
+export default function App() {
+  const [entered, setEntered] = useState(false);
+  if (!entered) return <WelcomePage onEnter={() => setEntered(true)} />;
+  return <Album />;
 }
