@@ -612,10 +612,10 @@ function Album() {
           from { opacity: 0; transform: scale(0.88); }
           to   { opacity: 1; transform: scale(1); }
         }
-        @keyframes shimmer {
-          0%   { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
+        @keyframes polaroidGlow {
+          0%, 100% { box-shadow: 0 20px 60px rgba(60,10,30,0.5), 0 4px 20px rgba(180,80,110,0.3), 0 0 0 0px rgba(212,120,154,0); }
+          50%       { box-shadow: 0 20px 60px rgba(60,10,30,0.5), 0 4px 20px rgba(180,80,110,0.3), 0 0 20px 6px rgba(212,120,154,0.45); }
+        } 
       `}</style>
 
       <div
@@ -970,8 +970,7 @@ function Album() {
       style={{
         background: "#fff",
         padding: "10px 10px 36px 10px",
-        boxShadow: "0 20px 60px rgba(60,10,30,0.5), 0 4px 20px rgba(180,80,110,0.3)",
-        animation: "modalPhotoIn 0.35s cubic-bezier(0.23,1,0.32,1) forwards",
+        animation: "modalPhotoIn 0.35s cubic-bezier(0.23,1,0.32,1) forwards, polaroidGlow 2.2s 0.35s ease-in-out infinite",
         maxWidth: photoZoomed ? "95vw" : "85vw",
         maxHeight: photoZoomed ? "90vh" : "75vh",
         transition: "max-width 0.3s ease, max-height 0.3s ease",
@@ -979,16 +978,6 @@ function Album() {
         position: "relative",
       }}
     >
-      {/* Shimmer effect on the polaroid frame */}
-      <div style={{
-        position: "absolute",
-        inset: 0,
-        background: "linear-gradient(105deg, transparent 40%, rgba(255,220,235,0.18) 50%, transparent 60%)",
-        backgroundSize: "200% auto",
-        animation: "shimmer 2.5s linear infinite",
-        pointerEvents: "none",
-        borderRadius: 1,
-      }} />
 
       <img
         src={selectedPhoto}
