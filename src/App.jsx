@@ -309,34 +309,22 @@ function PageContent({ index }) {
 }
 
 function BackgroundMusic({ playing }) {
-  const playerRef = useRef(null);
-  const containerRef = useRef(null);
+  const audioRef = useRef(null);
 
   useEffect(() => {
-    if (!playing) return;
-
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
-
-    window.onYouTubeIframeAPIReady = () => {
-      playerRef.current = new window.YT.Player(containerRef.current, {
-        height: "0",
-        width: "0",
-        videoId: "sEhDuBKZMO0",
-        playerVars: { autoplay: 1, loop: 1, playlist: "sEhDuBKZMO0", controls: 0 },
-        events: {
-          onReady: (e) => e.target.playVideo(),
-        },
-      });
-    };
-
-    if (window.YT && window.YT.Player) {
-      window.onYouTubeIframeAPIReady();
+    if (playing && audioRef.current) {
+      audioRef.current.play().catch(() => {});
     }
   }, [playing]);
 
-  return <div ref={containerRef} style={{ display: "none" }} />;
+  return (
+    <audio
+      ref={audioRef}
+      src="https://drive.google.com/uc?export=download&id=1wbA1VSagyL5yHsC3gaUP8CPTo04liAkY"
+      loop
+      style={{ display: "none" }}
+    />
+  );
 }
 
 function Album() {
