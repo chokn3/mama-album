@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 
 // ─── YOUR PHOTOS ───────────────────────────────────────────────
-const COVER_PHOTO = "https://lh3.googleusercontent.com/d/1QlE30zwI8AtnDhh_ged-p0SR_07_x3Ro"; // ← replace with your mom's photo ID
+const COVER_PHOTO = "https://lh3.googleusercontent.com/d/12jSAoRv6CdYcoH9LIsSJZaa4o0OvbnNh"; // ← replace with your mom's photo ID
 
 const pages = [
   "cover",
