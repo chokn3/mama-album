@@ -413,7 +413,7 @@ function EndPage() {
   );
 }
 
-function PhotoPage({ data }) {
+function PhotoPage({ data, onPhotoClick }) {
   return (
     <div
       style={{
@@ -442,15 +442,25 @@ function PhotoPage({ data }) {
           }}
         >
           <div
+            onClick={() => onPhotoClick && onPhotoClick(photo.src)}
             style={{
               background: "#fff",
               padding: "5px 5px 20px 5px",
-              boxShadow:
-                "0 2px 10px rgba(180,80,110,0.15), 0 1px 3px rgba(180,80,110,0.1)",
+              boxShadow: "0 2px 10px rgba(180,80,110,0.15), 0 1px 3px rgba(180,80,110,0.1)",
               transform: `rotate(${photo.tilt})`,
               width: "100%",
               height: "100%",
               boxSizing: "border-box",
+              cursor: "pointer",
+              transition: "transform 0.2s ease, box-shadow 0.2s ease",
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = `rotate(${photo.tilt}) scale(1.03)`;
+              e.currentTarget.style.boxShadow = "0 8px 24px rgba(180,80,110,0.28), 0 2px 6px rgba(180,80,110,0.15)";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = `rotate(${photo.tilt})`;
+              e.currentTarget.style.boxShadow = "0 2px 10px rgba(180,80,110,0.15), 0 1px 3px rgba(180,80,110,0.1)";
             }}
           >
             <img
@@ -471,21 +481,15 @@ function PhotoPage({ data }) {
   );
 }
 
-function PageContent({ index }) {
+function PageContent({ index, onPhotoClick }) {
   const data = pages[index];
   if (data == null)
     return (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          background: `linear-gradient(145deg, ${paperBg}, ${paperBg2})`,
-        }}
-      />
+      <div style={{ width: "100%", height: "100%", background: `linear-gradient(145deg, ${paperBg}, ${paperBg2})` }} />
     );
   if (data === "cover") return <CoverPage />;
   if (data === "end") return <EndPage />;
-  return <PhotoPage data={data} />;
+  return <PhotoPage data={data} onPhotoClick={onPhotoClick} />;
 }
 
 function BackgroundMusic({ playing }) {
@@ -519,6 +523,8 @@ function Album() {
   const touchStartX = useRef(null);
   const total = pages.length;
   const [, forceUpdate] = useState(0);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [photoZoomed, setPhotoZoomed] = useState(false);
 
   const doTurn = useCallback(
     (dir) => {
@@ -597,6 +603,18 @@ function Album() {
         @keyframes pageEnterBg {
           from { opacity: 0; transform: scale(1.03); }
           to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes modalBackdropIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes modalPhotoIn {
+          from { opacity: 0; transform: scale(0.88); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+          0%   { background-position: -200% center; }
+          100% { background-position: 200% center; }
         }
       `}</style>
 
@@ -733,7 +751,7 @@ function Album() {
                 overflow: "hidden",
               }}
             >
-              <PageContent index={animating ? underIndexRef.current : displayIndex} />
+              <PageContent index={animating ? underIndexRef.current : displayIndex} onPhotoClick={setSelectedPhoto} />
             </div>
 
             {animating && (
@@ -761,7 +779,7 @@ function Album() {
                     overflow: "hidden",
                   }}
                 >
-                  <PageContent index={animIndexRef.current} />
+                  <PageContent index={animIndexRef.current} onPhotoClick={setSelectedPhoto} />
                   <div
                     style={{
                       position: "absolute",
@@ -807,44 +825,6 @@ function Album() {
               </div>
             )}
 
-            {!animating && (
-              <>
-                {displayIndex > 0 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      left: 0, top: 0,
-                      width: "25%", height: "100%",
-                      zIndex: 3, cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                      paddingLeft: 8,
-                    }}
-                    onClick={() => doTurn(-1)}
-                  >
-                    <span style={{ color: "rgba(180,80,110,0.4)", fontSize: 20 }}>‹</span>
-                  </div>
-                )}
-                {displayIndex < total - 1 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      left: "25%", top: 0,
-                      width: "75%", height: "100%",
-                      zIndex: 3, cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                      paddingRight: 8,
-                    }}
-                    onClick={() => doTurn(1)}
-                  >
-                    <span style={{ color: "rgba(180,80,110,0.4)", fontSize: 20 }}>›</span>
-                  </div>
-                )}
-              </>
-            )}
           </div>
         </div>
 
@@ -915,10 +895,129 @@ function Album() {
             fontWeight: 400,
           }}
         >
-          swipe or tap to turn pages
+          swipe left or right to turn pages
         </p>
       </div>
       </div>
+      {selectedPhoto && (
+  <div
+    onClick={() => { setSelectedPhoto(null); setPhotoZoomed(false); }}
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 100,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "rgba(60, 10, 30, 0.72)",
+      backdropFilter: "blur(8px)",
+      WebkitBackdropFilter: "blur(8px)",
+      animation: "modalBackdropIn 0.3s ease forwards",
+      padding: 24,
+    }}
+  >
+    {/* Decorative corner flowers */}
+    {["top:16px;left:16px", "top:16px;right:16px", "bottom:16px;left:16px", "bottom:16px;right:16px"].map((pos, i) => (
+      <span key={i} style={{
+        position: "absolute",
+        ...Object.fromEntries(pos.split(";").map(p => p.split(":"))),
+        fontSize: 18,
+        opacity: 0.5,
+        pointerEvents: "none",
+      }}>✿</span>
+    ))}
+
+    {/* Close button */}
+    <button
+      onClick={() => { setSelectedPhoto(null); setPhotoZoomed(false); }}
+      style={{
+        position: "absolute",
+        top: 20, right: 20,
+        background: "rgba(255,220,235,0.15)",
+        border: "1px solid rgba(255,200,225,0.3)",
+        color: "rgba(255,220,240,0.9)",
+        width: 36, height: 36,
+        borderRadius: "50%",
+        fontSize: 18,
+        cursor: "pointer",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        backdropFilter: "blur(4px)",
+        zIndex: 101,
+        transition: "background 0.2s",
+      }}
+    >
+      ×
+    </button>
+
+    {/* Hint text */}
+    <p style={{
+      position: "absolute",
+      bottom: 20,
+      color: "rgba(255,210,230,0.6)",
+      fontSize: 9,
+      letterSpacing: 3,
+      textTransform: "uppercase",
+      fontFamily: "'Jost', sans-serif",
+      fontWeight: 300,
+      pointerEvents: "none",
+    }}>
+      tap photo to zoom · tap outside to close
+    </p>
+
+    {/* Photo polaroid */}
+    <div
+      onClick={e => { e.stopPropagation(); setPhotoZoomed(z => !z); }}
+      style={{
+        background: "#fff",
+        padding: "10px 10px 36px 10px",
+        boxShadow: "0 20px 60px rgba(60,10,30,0.5), 0 4px 20px rgba(180,80,110,0.3)",
+        animation: "modalPhotoIn 0.35s cubic-bezier(0.23,1,0.32,1) forwards",
+        maxWidth: photoZoomed ? "95vw" : "85vw",
+        maxHeight: photoZoomed ? "90vh" : "75vh",
+        transition: "max-width 0.3s ease, max-height 0.3s ease",
+        cursor: photoZoomed ? "zoom-out" : "zoom-in",
+        position: "relative",
+      }}
+    >
+      {/* Shimmer effect on the polaroid frame */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        background: "linear-gradient(105deg, transparent 40%, rgba(255,220,235,0.18) 50%, transparent 60%)",
+        backgroundSize: "200% auto",
+        animation: "shimmer 2.5s linear infinite",
+        pointerEvents: "none",
+        borderRadius: 1,
+      }} />
+
+      <img
+        src={selectedPhoto}
+        alt=""
+        style={{
+          display: "block",
+          maxWidth: "100%",
+          maxHeight: photoZoomed ? "80vh" : "65vh",
+          objectFit: "contain",
+          transition: "max-height 0.3s ease",
+        }}
+      />
+
+      {/* Zoom icon hint */}
+      <div style={{
+        position: "absolute",
+        bottom: 8,
+        left: "50%",
+        transform: "translateX(-50%)",
+        color: "rgba(180,80,110,0.45)",
+        fontSize: 10,
+        fontFamily: "'Jost', sans-serif",
+        letterSpacing: 2,
+      }}>
+        {photoZoomed ? "−" : "+"}
+      </div>
+    </div>
+  </div>
+)}
     </>
   );
 }
