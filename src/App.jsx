@@ -7,7 +7,7 @@ const pages = [
   "cover",
   {
     top: "https://lh3.googleusercontent.com/d/1rHVz4J_CSTl91QDFzi50HSmx8yBF1QrS",
-    bottom: "https://lh3.googleusercontent.com/d/1sEfhAe256d9bhD0BiuCdlNF1QQksERUn",
+    bottom: "https://lh3.googleusercontent.com/d/1hAE9oghGazLqx_Et-MC_wHrJ11M711Sj",
     topTilt: "-1.5deg",
     bottomTilt: "1.2deg",
   },
@@ -26,6 +26,12 @@ const pages = [
     {
     top: "https://lh3.googleusercontent.com/d/1YjAsp_5KLi18GdYcmuLomrEOwQodCOlq",
     bottom: "https://lh3.googleusercontent.com/d/1HWa-6hw5LvUOfmWfJyUyVJkM_Eh_k9cq",
+    topTilt: "-1.2deg",
+    bottomTilt: "1.5deg",
+  },
+      {
+    top: "https://lh3.googleusercontent.com/d/1g5mwSOBo4ksJsvruZ3VNRVwQUPmSXh5E",
+    bottom: "https://lh3.googleusercontent.com/d/1S71ppfbfGR-MeCzZyySOpc3HSmocB6LY",
     topTilt: "-1.2deg",
     bottomTilt: "1.5deg",
   },
