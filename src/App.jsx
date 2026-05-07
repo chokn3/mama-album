@@ -1115,6 +1115,40 @@ function Album() {
       ×
     </button>
 
+      {/* Download button */}
+    
+      <a href={selectedPhoto}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={e => e.stopPropagation()}
+      style={{
+        position: "absolute",
+        top: 20, left: 20,
+        background: "linear-gradient(135deg, #d4608a, #b03060, #8a1840)",
+        border: "none",
+        color: "rgba(255,240,248,0.95)",
+        height: 36,
+        paddingLeft: 14,
+        paddingRight: 14,
+        borderRadius: 100,
+        fontSize: 9,
+        letterSpacing: 4,
+        textTransform: "uppercase",
+        fontFamily: "'Jost', sans-serif",
+        fontWeight: 500,
+        cursor: "pointer",
+        display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+        boxShadow: "0 4px 16px rgba(176,48,96,0.45)",
+        backdropFilter: "blur(4px)",
+        zIndex: 101,
+        textDecoration: "none",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+      }}
+    >
+      <span style={{ fontSize: 13 }}>↓</span>
+      <span>Save photo</span>
+    </a>
+
     {/* Hint text */}
     <p style={{
       position: "absolute",
