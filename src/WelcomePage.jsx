@@ -33,10 +33,18 @@ const SPARKLES = [
 export default function WelcomePage({ onEnter }) {
   const [visible, setVisible] = useState(false);
   const [leaving, setLeaving] = useState(false);
+  const [visitCount, setVisitCount] = useState(null);
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 80);
     return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    fetch("https://api.countapi.xyz/hit/mamas-album-2026/visits")
+      .then(res => res.json())
+      .then(data => setVisitCount(data.value))
+      .catch(() => {});
   }, []);
 
   const handleEnter = () => {
@@ -321,6 +329,17 @@ export default function WelcomePage({ onEnter }) {
             animation: visible ? "fadeIn 1s 1.1s both" : undefined,
           }}>
             Made by Jake & Max ♡
+          {visitCount !== null && (
+            <span style={{
+              display: "block",
+              marginTop: 6,
+              fontSize: 9,
+              letterSpacing: 3,
+              color: "rgba(120,40,70,0.45)",
+            }}>
+              cherished {visitCount.toLocaleString()} times
+            </span>
+          )}
           </p>
         </div>
 
