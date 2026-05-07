@@ -327,6 +327,7 @@ export default function WelcomePage({ onEnter }) {
             textTransform: "uppercase",
             color: "rgba(120,40,70,0.6)",
             animation: visible ? "fadeIn 1s 1.1s both" : undefined,
+            textAlign: "center",
           }}>
             Made by Jake & Max ♡
           {visitCount !== null && (
