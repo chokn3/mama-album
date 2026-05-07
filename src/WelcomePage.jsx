@@ -41,9 +41,9 @@ export default function WelcomePage({ onEnter }) {
   }, []);
 
   useEffect(() => {
-    fetch("https://api.countapi.xyz/hit/mamas-album-2026/visits")
+    fetch("https://api.counterapi.dev/v1/mamas-album-2026/visits/up")
       .then(res => res.json())
-      .then(data => setVisitCount(data.value))
+      .then(data => setVisitCount(data.count))
       .catch(() => {});
   }, []);
 
