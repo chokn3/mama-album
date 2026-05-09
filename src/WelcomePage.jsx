@@ -34,6 +34,7 @@ export default function WelcomePage({ onEnter }) {
   const [visible, setVisible] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [visitCount, setVisitCount] = useState(null);
+  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 80);
@@ -318,6 +319,44 @@ export default function WelcomePage({ onEnter }) {
           </div>
 
           {/* Bottom hint */}
+          {/* Wedding Video Button */}
+          <button
+            onClick={() => setShowVideo(true)}
+            style={{
+              marginTop: 24,
+              cursor: "pointer",
+              border: "1.5px solid rgba(176,48,96,0.5)",
+              background: "rgba(255,240,248,0.6)",
+              backdropFilter: "blur(8px)",
+              color: "#8a1840",
+              padding: "13px 36px",
+              borderRadius: 100,
+              fontFamily: "'Jost', sans-serif",
+              fontWeight: 500,
+              fontSize: 11,
+              letterSpacing: 4,
+              textTransform: "uppercase",
+              boxShadow: "0 4px 18px rgba(176,48,96,0.18)",
+              transition: "all 0.25s ease",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              animation: visible ? "fadeSlideUp 0.8s 0.85s both" : undefined,
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = "linear-gradient(135deg, #d4608a, #b03060)";
+              e.currentTarget.style.color = "#fff";
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = "rgba(255,240,248,0.6)";
+              e.currentTarget.style.color = "#8a1840";
+              e.currentTarget.style.transform = "translateY(0)";
+            }}
+          >
+            <span style={{ fontSize: 14 }}>🎞</span>
+            <span>Your Wedding</span>
+          </button>
           <p style={{
             marginTop: 32,
             fontFamily: "'Jost', sans-serif",
@@ -357,6 +396,80 @@ export default function WelcomePage({ onEnter }) {
           <div style={{ width: 30, height: 1.5, background: "linear-gradient(to left, transparent, rgba(176,48,96,0.5))" }} />
         </div>
       </div>
+
+      {/* Wedding Video Modal */}
+      {showVideo && (
+        <div
+          onClick={() => setShowVideo(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 200,
+            background: "rgba(40, 5, 20, 0.85)",
+            backdropFilter: "blur(10px)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+            animation: "fadeIn 0.3s ease forwards",
+          }}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setShowVideo(false)}
+            style={{
+              position: "absolute",
+              top: 20, right: 20,
+              background: "rgba(255,220,235,0.15)",
+              border: "1px solid rgba(255,200,225,0.3)",
+              color: "rgba(255,220,240,0.9)",
+              width: 36, height: 36,
+              borderRadius: "50%",
+              fontSize: 18,
+              cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}
+          >
+            ×
+          </button>
+
+          <p style={{
+            color: "rgba(255,210,230,0.8)",
+            fontSize: 11,
+            letterSpacing: 5,
+            textTransform: "uppercase",
+            fontFamily: "'Jost', sans-serif",
+            marginBottom: 20,
+          }}>
+            ✿ your wedding ✿
+          </p>
+
+          <video
+            src="https://res.cloudinary.com/dgd7zzp5t/video/upload/q_auto/f_auto/v1778307490/SDE_Mama_Papa_xbwoxg.mp4"
+            controls
+            autoPlay
+            onClick={e => e.stopPropagation()}
+            style={{
+              maxWidth: "90vw",
+              maxHeight: "75vh",
+              borderRadius: 4,
+              boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
+            }}
+          />
+
+          <p style={{
+            marginTop: 16,
+            color: "rgba(255,210,230,0.45)",
+            fontSize: 9,
+            letterSpacing: 3,
+            textTransform: "uppercase",
+            fontFamily: "'Jost', sans-serif",
+          }}>
+            click outside to close
+          </p>
+        </div>
+      )}
     </>
   );
 }
