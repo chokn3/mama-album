@@ -441,6 +441,9 @@ export default function WelcomePage({ onEnter }) {
             textTransform: "uppercase",
             fontFamily: "'Jost', sans-serif",
             marginBottom: 20,
+            textAlign: "center",     // ← add this
+            width: "100%",           // ← add this
+            padding: "0 16px",       // ← add this for safe side margins
           }}>
             ✿ we reimagined your wedding for you, mama ✿
           </p>
