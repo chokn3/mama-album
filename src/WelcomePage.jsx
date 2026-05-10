@@ -442,7 +442,7 @@ export default function WelcomePage({ onEnter }) {
             fontFamily: "'Jost', sans-serif",
             marginBottom: 20,
           }}>
-            ✿ your wedding ✿
+            ✿ we reimagined your wedding for you, mama ✿
           </p>
 
           <video
@@ -466,7 +466,7 @@ export default function WelcomePage({ onEnter }) {
             textTransform: "uppercase",
             fontFamily: "'Jost', sans-serif",
           }}>
-            click outside to close
+            tap outside to close
           </p>
         </div>
       )}
