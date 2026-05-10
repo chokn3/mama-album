@@ -446,7 +446,7 @@ export default function WelcomePage({ onEnter }) {
           </p>
 
           <video
-            src="https://res.cloudinary.com/dgd7zzp5t/video/upload/q_auto/f_auto/v1778307490/SDE_Mama_Papa_xbwoxg.mp4"
+            src="https://res.cloudinary.com/dgd7zzp5t/video/upload/q_auto/f_auto/v1778372910/SDE_Mama_and_Papa_Final_zsz5bo.mp4"
             controls
             autoPlay
             onClick={e => e.stopPropagation()}
